@@ -10,6 +10,6 @@ const restaurantSchema = new mongoose.Schema({
   priceCategory: Number,
 });
 
-const restaurantModel = mongoose.model("restaurants", restaurantSchema);
+const restaurantModel = mongoose.model("restaurant", restaurantSchema);
 
 module.exports = restaurantModel;
