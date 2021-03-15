@@ -35,10 +35,11 @@ const hotels=[
             priceCategory : 3 
             },
 ]
-async ()=>{
+const HotelsCreactData = async ()=>{
 await hotelModel.deleteMany({}).exec();
-hotelModel.create(hotels);
+await hotelModel.create(hotels);
 }
+HotelsCreactData();
 
 restaurantModel.deleteMany({}).then(() => {
   restaurantModel.create([
