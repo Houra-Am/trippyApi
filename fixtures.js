@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const hotelModel = require("./models/hotels");
 const restaurantModel = require("./models/restaurants");
-
+// voir populate à 23Min pour retrouver l'id
 mongoose.connect("mongodb://localhost:27017/trippy_basics",{useNewUrlParser: true, useUnifiedTopology: true },()=>{console.log("Ready to hack")});
 const hotels=[
     {
@@ -9,7 +9,7 @@ const hotels=[
     address :"25, avenue Montaigne",
     city :"Paris",
     country : "France",
-    stars :5 ,
+    stars :3 ,
     hasSpa :true,
     hasPool : true,
     priceCategory : 1 
@@ -19,7 +19,7 @@ const hotels=[
         address :"31,avenue George V",
         city :"Paris",
         country : "France",
-        stars :5 ,
+        stars :3 ,
         hasSpa :true,
         hasPool : true,
         priceCategory : 2 
@@ -29,11 +29,11 @@ const hotels=[
             address :"251, rue Saint-Honoré",
             city :"Paris",
             country : "France",
-            stars :5 ,
+            stars :1 ,
             hasSpa :true,
             hasPool : true,
             priceCategory : 3 
-            },
+        }
 ]
 const HotelsCreactData = async ()=>{
 await hotelModel.deleteMany({}).exec();
