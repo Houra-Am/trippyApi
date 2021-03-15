@@ -40,15 +40,22 @@ app.post("/post/hotels", async (req, res) => {
   res.send(" ajouté");
 })
 
-app.put('/hotels/:id', async (req, res) => {
-      await restaurantsModel.updateOne({
-      
-      });
+app.put('/update/hotels/:id', async (req, res) => {
+     const hotelsUpdate=await hotelModel.updateOne({_id:req.params.id}
+      ,{name:req.query.name }).exec();
+      res.json(hotelsUpdate)
 })
 
 app.delete("delete/hotels/:id", async (req,res)=>{
-  const hotel= await hotelModel.findOne({_id:req.params.id}).lean().exec();
+  const hotel= await hotelModel.deleteOne({_id:req.params.id}).lean().exec();
   res.json(hotel);
+  //next();
+})
+
+app.get("/hotels", async (req,res)=>{
+  const{page =1,limit=2}= req.query;
+  const hotelPages= await hotelModel.find().limit(limit*1).skip().lean().exec();
+  res.json(hotelPages);
   //next();
 })
 
