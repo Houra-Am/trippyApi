@@ -30,26 +30,14 @@ app.get("/hotels", async (req, res) => {
   res.json(hotels);
 });
 
-// ------------------------- >  Restaurants Get restaurantModel  < -----------------------
-app.get("/restaurants", async (req, res) => {
-  const restaurants = await restaurantModel.find().lean().exec();
-  res.json(restaurants);
-});
-
-// ------------------------- >     hotelModel Hotels Get/:id    < -----------------------
-app.get("/hotels/:id", async (req, res) => {
-  const hotels = await hotelModel.findOne({ _id: req.params.id }).lean().exec();
+app.get("/hotels", async (req,res)=>{
+  const hotels= await hotelModel.find().lean().exec();
   res.json(hotels);
-  //next();
-});
+})
 
-// ------------------------- >   restaurantModel Restaurants Get/:id  < -----------------------
-app.get("/restaurants/:id", async (req, res) => {
-  const restaurants = await restaurantModel
-    .findOne({ _id: req.params.id })
-    .lean()
-    .exec();
-  res.json(restaurants);
+app.get("/hotels/:id", async (req,res)=>{
+  const hotel= await hotelModel.findOne({_id:req.params.id}).lean().exec();
+  res.json(hotel);
   //next();
 });
 
@@ -68,48 +56,15 @@ app.post("/post/hotels", async (req, res) => {
   res.send("ajouté");
 });
 
-// ------------------------- >  Post restaurants Create  < -----------------------
-app.post("/post/restaurants", async (req, res) => {
-  await restaurantModel.create({
-    name: req.body.name,
-    address: req.body.address,
-    city: req.body.city,
-    country: req.body.country,
-    stars: req.body.stars,
-    cuisine: req.body.cuisine,
-    priceCategory: req.body.priceCategory,
-  });
-  res.send("ajouté");
-});
-app.put('/update/hotels/:id', async (req, res) => {
-     const hotelsUpdate=await hotelModel.updateOne({_id:req.params.id}
-      ,{name:req.query.name }).exec();
-      res.json(hotelsUpdate)
+app.put('/hotels/:id', async (req, res) => {
+      await restaurantsModel.updateOne({
+      
+      });
 })
 
-app.delete("delete/hotels/:id", async (req,res)=>{
-  const hotel= await hotelModel.deleteOne({_id:req.params.id}).lean().exec();
-  res.json(hotel);
-// ------------------------- >  Put hotels update  < -----------------------
-app.put("/hotels/:id", async (req, res) => {
-  await restaurantsModel.updateOne({});
-});
-
-// ------------------------- >  Put restaurants update  < -----------------------
-app.put("/update/restaurants/:id", async (req, res) => {
-  const restaurantUpdate = await restaurantModel
-    .updateOne({ _id: req.params.id }, { name: req.query.name })
-    .exec();
-  res.json(restaurantUpdate);
-});
-
-// ------------------------- >  Put hotels delete  < -----------------------
-app.delete("delete/hotels/:id", async (req, res) => {
-  const hotels = await hotelModel
-    .deleteOne({ _id: req.params.id })
-    .lean()
-    .exec();
-  res.json(hotels);
+app.delete("/delete/hotels/:id", async (req,res)=>{
+  const hotelDelete= await hotelModel.deleteOne({_id:req.params.id}).lean().exec();
+  res.json(hotelDelete);
   //next();
 });
 
@@ -120,12 +75,30 @@ app.get("/hotels", async (req,res)=>{
   //next();
 })
 
-const searchHotel= async()=>{
+app.get('/hotels', async (req, res) => {
+  try {
+      if (req.query.limit) {
+          if (req.query.limit > 0) {
+              const limitHotels = await hotelsModel.aggregate().limit(parseInt(req.query.limit));
+              res.json(limitHotels)
+          } else {
+              res.send("Erreur: passe moi un chiffre!")
+          }
+      } else {
+          const allHotels = await hotelsModel.find().lean().exec()
+          res.json(allHotels)
+      }
+  } catch (error) {
+      res.send(error)
+  }
+})
+
+function searchHotel() {
   hotelModel.findOne({
     //reutiliser avec params ?
     //revoir video poppulate2 à 18min.
   }).lean().exec();
-  return hotets._id
+  return hotets._id;
 }
 // ------------------------- >  Put restaurants delete  < -----------------------
 app.delete("delete/restaurants/:id", async (req, res) => {
